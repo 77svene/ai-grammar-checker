@@ -2,72 +2,57 @@ import gradio as gr
     import httpx
     import os
     
-    OPENROUTER_KEY = os.environ.get("OPENROUTER_KEY", "")
+    API_KEY = os.environ.get("OPENROUTER_KEY", "")
+    
+    USAGE_LIMIT = 10
+    usage_count = {"value": 0}
     
     async def check_grammar(text):
         if not text.strip():
-            return "Please enter some text to check.", ""
+            return "Please enter some text to check."
         
-        if not OPENROUTER_KEY:
-            return "API key not configured.", ""
+        if usage_count["value"] >= USAGE_LIMIT:
+            return "Daily free limit reached (10 checks). Come back tomorrow for more free checks, or try our other free tools at huggingface.co/spaces/orama-ai"
+        
+        usage_count["value"] += 1
         
         try:
-            async with httpx.AsyncClient() as client:
-                resp = await client.post(
+            async with httpx.AsyncClient() as c:
+                resp = await c.post(
                     "https://openrouter.ai/api/v1/chat/completions",
-                    headers={
-                        "Authorization": f"Bearer {OPENROUTER_KEY}",
-                        "Content-Type": "application/json"
-                    },
+                    headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
                     json={
-                        "model": "google/gemma-3-27b-it:free",
+                        "model": "google/gemini-2.0-flash-001",
                         "messages": [
-                            {"role": "system", "content": "You are a professional grammar checker. Analyze the input text and provide: 1) A corrected version of the text with all grammar, spelling, and punctuation errors fixed. 2) A detailed list of all errors found with explanations. Be thorough and helpful."},
-                            {"role": "user", "content": f"Check and correct this text:\n\n{text}"}
+                            {"role": "system", "content": "You are a grammar checker. Fix all grammar, spelling, and punctuation errors in the user\'s text. Return ONLY the corrected text, nothing else. If no errors found, return the original text."},
+                            {"role": "user", "content": text}
                         ],
-                        "max_tokens": 2048
+                        "max_tokens": 2000
                     },
                     timeout=30
                 )
-                
                 if resp.status_code == 200:
-                    result = resp.json()["choices"][0]["message"]["content"]
-                    lines = result.split("\n")
-                    corrected = ""
-                    errors = ""
-                    in_corrected = True
-                    for line in lines:
-                        if "error" in line.lower() and ":" in line.lower() and in_corrected:
-                            in_corrected = False
-                        if in_corrected:
-                            corrected += line + "\n"
-                        else:
-                            errors += line + "\n"
-                    return corrected.strip() or result, errors.strip()
+                    corrected = resp.json()["choices"][0]["message"]["content"]
+                    return corrected
                 else:
-                    return f"Error: {resp.status_code}", ""
+                    return f"API error: {resp.status_code}"
         except Exception as e:
-            return f"Error: {str(e)}", ""
+            return f"Error: {str(e)}"
     
-    with gr.Blocks(title="AI Grammar Checker Pro", theme=gr.themes.Soft()) as demo:
-        gr.Markdown("# AI Grammar Checker Pro")
-        gr.Markdown("Paste your text below and get instant grammar, spelling, and punctuation corrections.")
+    with gr.Blocks(title="Free AI Grammar Checker", theme=gr.themes.Soft()) as demo:
+        gr.Markdown("# Free AI Grammar Checker")
+        gr.Markdown("Fix grammar, spelling, and punctuation mistakes in 1 click. No signup required.")
+        gr.Markdown(f"**Free: {USAGE_LIMIT} checks per session**")
         
         with gr.Row():
-            with gr.Column():
-                input_text = gr.Textbox(label="Your Text", placeholder="Enter or paste your text here...", lines=8)
-                check_btn = gr.Button("Check Grammar", variant="primary")
-            with gr.Column():
-                corrected_text = gr.Textbox(label="Corrected Text", lines=8, interactive=False)
-                errors_list = gr.Textbox(label="Errors Found", lines=8, interactive=False)
+            input_text = gr.Textbox(label="Your text", placeholder="Paste your text here...", lines=6)
+            output_text = gr.Textbox(label="Corrected text", lines=6)
+        
+        check_btn = gr.Button("Check Grammar", variant="primary")
+        check_btn.click(fn=check_grammar, inputs=input_text, outputs=output_text)
         
         gr.Markdown("---")
-        gr.Markdown("### Unlock Full Features")
-        gr.Markdown("- Unlimited checks with no length limits\n- Advanced style and tone suggestions\n- Bulk document checking\n- API access for developers")
-        gr.Markdown("#### Get Pro Access - $9.99")
-        gr.HTML('<a href="https://nowpayments.io/payment/?iid=6136175542" target="_blank" style="display:inline-block;padding:12px 32px;background:#4CAF50;color:white;text-decoration:none;border-radius:8px;font-weight:bold;font-size:16px;">Pay with Crypto</a>')
-        
-        check_btn.click(fn=check_grammar, inputs=[input_text], outputs=[corrected_text, errors_list])
+        gr.Markdown("More free AI tools: [Paraphrase Pro](https://huggingface.co/spaces/orama-ai/ai-paraphrase-pro) | [Sentence Rewriter](https://huggingface.co/spaces/orama-ai/ai-sentence-rewriter) | [Code Review](https://huggingface.co/spaces/orama-ai/ai-code-review-pro)")
     
     if __name__ == "__main__":
         demo.launch()
