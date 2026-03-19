@@ -10,3 +10,7 @@ Use it for:
 Free tier available • Upgrade for unlimited usage
 
 [Try it now →](https://huggingface.co/spaces/orama-ai/ai-grammar-checker-pro)
+
+## Free Tier
+- 5 uses/day with usage limits
+- Upgrade for unlimited access — powered by Stripe (no crypto)
