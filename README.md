@@ -31,3 +31,10 @@ Upgrade via Stripe for unlimited usage with no daily restrictions. Enjoy uninter
 
 [Upgrade Now for Unlimited Access](https://yourdomain.com/upgrade)
 ```
+
+**Use Case:** AI tool for analyzing Ai Grammar Checker tasks efficiently.
+
+
+### 🚀 Free Tier & Upgrade
+- **Free:** 5 uses/day via GitHub/HF.
+- **Pro:** Unlimited access via Stripe checkout (see [pricing](#)).
