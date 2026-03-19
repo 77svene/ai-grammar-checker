@@ -1,9 +1,11 @@
 ```markdown
-# AI Grammar Checker
+# Fix Grammar Mistakes in 1 Click
 
-Fix grammar in any text with 1-click AI.
+**Instant AI Grammar Checker** — Paste any text and get perfect grammar, spelling, punctuation, and style corrections instantly.
 
-Free tier available. Upgrade for unlimited usage.
+Ideal for emails, essays, LinkedIn posts, reports & professional writing.
 
-Try it: https://huggingface.co/spaces/orama-ai/ai-grammar-checker-pro
+Free tier available • Upgrade for unlimited usage
+
+[Try it now →](https://huggingface.co/spaces/orama-ai/ai-grammar-checker-pro)
 ```
