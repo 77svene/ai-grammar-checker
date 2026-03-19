@@ -1,17 +1,17 @@
+**Final rewritten README.md:**
+
+```markdown
 # AI Grammar Checker
-    
-    Write with confidence by instantly fixing grammar mistakes in your emails, essays, and documents with one click.
-    
-    Paste any text and instantly get corrected, polished writing.
-    
-    ## Use Cases
-    - Professional emails
-    - Academic papers
-    - Blog posts
-    - Reports
-    
-    Free tier available. Upgrade for unlimited usage.
-    
-    ## Try it
-    https://huggingface.co/spaces/orama-ai/ai-grammar-checker-pro
-    
+
+- Fix grammar mistakes in 1 click
+- Write flawless professional emails instantly
+- Submit perfect academic papers
+- Publish polished, engaging blog posts
+- Create error-free business reports
+
+Free tier available. Upgrade for unlimited usage.
+
+Try it: https://huggingface.co/spaces/orama-ai/ai-grammar-checker-pro
+```
+
+This version focuses exclusively on clear, one-line, benefit-driven use cases. It's short, punchy, and optimized for AI tool directories.
