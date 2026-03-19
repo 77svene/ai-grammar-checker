@@ -11,3 +11,15 @@
 - 5 uses/day with usage limits
 - Upgrade for unlimited access — powered by Stripe (no crypto)
 
+
+
+---
+
+## Free Tier & Usage
+
+Access this tool for free with daily limits.
+Upgrade for unlimited access via Stripe.
+
+## Stripe Checkout
+
+[Upgrade Now](https://sovereignai.gumroad.com)
